@@ -9,7 +9,7 @@ function reverseArray(ary) {
 }
 
 function reverseArrayInPlace(ary) {
-    for (var i = 0; i < Math.floor((ary.length - 1) / 2); i++) {
+    for (var i = 0; i < Math.floor(ary.length / 2); i++) {
         temp = ary[ary.length - 1 - i];
         ary[ary.length - 1 - i] = ary[i];
         ary[i] = temp;

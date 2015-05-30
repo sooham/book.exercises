@@ -1,6 +1,6 @@
 function arrayToList(ary) {
-    if (ary.length === 1) {
-        return {value: ary[0], rest: null};
+    if (ary.length === 0) {
+        return null;
     } else {
         return {value: ary[0], rest: arrayToList(ary.slice(1))};
     }
