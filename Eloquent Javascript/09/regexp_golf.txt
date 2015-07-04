@@ -1,0 +1,17 @@
+Create the smallest regular expression to match the given pattern only.
+Do not worry about word boundaries unless explictly mentioned
+
+1. car and cat
+    ca[rt]
+2. pop and prop
+    pr?op
+3. ferret, ferry, and ferrari
+    ferr(et|y|ari)
+4. Any word ending in ious
+    \b.*?ious\b
+5. A whitespace character followed by a dot, comma, colon, or semicolon
+    \s[.,:;]
+6. A word longer than 6 letters
+    \w{7,}
+7. A word without the letter e
+    \b[^e\s]+\b
