@@ -151,6 +151,32 @@ specialForms['define'] = function(args, env) {
     return value;
 };
 
+// make a function construct
+specialForms["fun"] = function(args, env) {
+    // fun(A, B, C, ....) where A, B, C ... is are arguments for the function
+    // and the last argument is the function body expression
+    if (!args.length)
+        throw new SyntaxError("Functions need a body");
+
+    function name(expr) {
+        // a helper function to check if expr is a word type
+        if (expr.type != "word")
+            throw new SyntaxError("Arg names must be words");
+        return expr.name;
+    }
+    var argNames = args.slice(0, args.length - 1).map(name);
+    var body = args[args.length - 1];
+
+    return function() {
+        if (arguments.length != argNames.length)
+            throw new TypeError("Wrong number of arguments");
+        var localEnv = Object.create(env);
+        for(var i = 0; i < arguments.length; i++)
+            localEnv[argNames[i]] = arguments[i];   // make a local environment to the function
+        return evaluate(body, env);
+    };
+};
+
 // Now work on the environment
 // The environment accepted by evaluate is an object with properties
 // whose names correspond to variable names and whose values correspond
@@ -164,6 +190,28 @@ topEnv["false"] = false;
     topEnv[op] = new Function("a, b", "return a " + op + " b;");
 });
 
+// creating our own Array function
+topEnv["array"] = function() {
+    // creates and holds an array object
+    return Array.prototype.slice.call(arguments, 0);
+};
+
+topEnv["length"] = function(array) {
+    if (!(array instanceof Array))
+        throw new TypeError("length function input is not array");
+    return array.length;
+};
+
+topEnv["element"] = function(array, i) {
+    if (!(args[0] instanceof Array))
+        throw new TypeError("element function input is not array");
+    if (!(args[1] instanceof Number || args[1] % 1 === 0))
+        throw new TypeError("element function has bad index");
+    return array[i];
+};
+
+
+
 topEnv["print"] = function(value) {
     console.log(value);
     return value;
@@ -173,4 +221,5 @@ topEnv["print"] = function(value) {
 function run() {
     var env = Object.create(topEnv);
     var program = Array.prototype.slice.call(arguments, 0).join("\n"); // converts arguments into array then program string
+    return evaluate(parse(program), env);
 }
