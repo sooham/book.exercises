@@ -1,9 +1,8 @@
 
 function skipSpace(string) {
     /* Removes leading whitespace from string */
-    var first = string.search(/\S/);
-    if (first == -1) return "";
-    return string.slice(first);
+    var skippable = string.match(/^(\s|#.*)*$/);
+    return string.slice(skippable[0]);
 }
 
 function parseApply(expr, program) {
@@ -139,6 +138,18 @@ specialForms['do'] = function(args, env) {
     return value;
 };
 
+specialForms['set'] = function(args, env) {
+    if (args.length != 2 || args.type != "word")
+        throw new SyntaxError("Bad use of set");
+    var varName = args[0].name;
+    var value = evaluate(args[1], env);
+    for (var scope = env; scope; scope = Object.getPrototypeOf(scope)) {
+        if (Object.prototype.hasOwnProperty.call(scope, varName)) {
+            scope[varName] = value;
+            return value;
+        }
+    }
+}
 // The define function is used for defining variables in the environment
 specialForms['define'] = function(args, env) {
     // define(A, B), where A is the word you want to define
@@ -161,7 +172,7 @@ specialForms["fun"] = function(args, env) {
     function name(expr) {
         // a helper function to check if expr is a word type
         if (expr.type != "word")
-            throw new SyntaxError("Arg names must be words");
+            throw new SyntaxError("arg names must be words");
         return expr.name;
     }
     var argNames = args.slice(0, args.length - 1).map(name);
