@@ -9,7 +9,7 @@ function skipSpace(string) {
 function parseApply(expr, program) {
     /* Checks if the expression is an application, and in the case it is
      * not, returns a expression object
-     * If expr is an application, it create the appropriate apply object
+     * If expr is an application, it creates the appropriate apply object
      * and adds all the applications arguments recursively.
      */
     // remove leading whitespace from program
@@ -21,7 +21,7 @@ function parseApply(expr, program) {
     }
 
     // Now program start with (, meaning expr was an application
-    // parse the list of args 
+    // parse the list of args
     program = skipSpace(program.slice(1));
     expr = {type: "apply", operator: expr, args:[]};
     while (program[0] != ")") {
@@ -85,7 +85,7 @@ function evaluate(expr, env) {
                 throw new ReferenceError("Undefined variable: " + expr.name);
 
         case "apply":
-            if (expr.operator.type == "word" && // in case of JS incompatible functions
+            if (expr.operator.type == "word" && // in case of special functions
                 expr.operator.name in specialForms)
                 return specialForms[expr.operator.name](expr.args, env);
 
@@ -103,6 +103,7 @@ var specialForms = Object.create(null);
 // adding functions to special forms
 specialForms['if'] = function(args, env) {
     // defines the if function in egg if(condition, A, B)
+    // if the first argument is true return A, else return B
     // similar to JS ternary operator ?:
     if (args.length != 3)
         throw new SyntaxError("Bad number of args to if");
@@ -114,6 +115,8 @@ specialForms['if'] = function(args, env) {
 };
 
 specialForms['while'] = function(args, env) {
+    // while function in egg, while(A, B)
+    // while A is true, we evaluate B
     if (args.length != 2)
         throw new SyntaxError("Bad number of args to while");
 
@@ -126,6 +129,9 @@ specialForms['while'] = function(args, env) {
 };
 
 specialForms['do'] = function(args, env) {
+    // The do form in if do(A, B, C,...)
+    // which evaluates which executes all its arguments from top to bottom
+    // returns the value produced by the last value
     var value = false;
     args.forEach(function(arg) {
         value = evaluate(arg, env);
@@ -133,11 +139,38 @@ specialForms['do'] = function(args, env) {
     return value;
 };
 
+// The define function is used for defining variables in the environment
 specialForms['define'] = function(args, env) {
+    // define(A, B), where A is the word you want to define
+    // B is the value
     if (args.length != 2 || args[0].type != "word")
         throw new SyntaxError("Bad use of define");
     var value = evaluate(args[1], env);
+    // insert the word A as B in environment
     env[args[0].name] = value;
     return value;
 };
 
+// Now work on the environment
+// The environment accepted by evaluate is an object with properties
+// whose names correspond to variable names and whose values correspond
+// to the values those variables are bound to
+topEnv = Object.create(null);
+
+topEnv["false"] = true;
+topEnv["false"] = false;
+// define comparison functions
+["+", "-", "/", "==", "<", ">"].forEach(function(op) {
+    topEnv[op] = new Function("a, b", "return a " + op + " b;");
+});
+
+topEnv["print"] = function(value) {
+    console.log(value);
+    return value;
+};
+
+// Finally make the run program in order to run egg programs
+function run() {
+    var env = Object.create(topEnv);
+    var program = Array.prototype.slice.call(arguments, 0).join("\n"); // converts arguments into array then program string
+}
