@@ -1,22 +1,22 @@
 function range(start, end, step) {
-    step = step || 1;
-    var result = [];
-    if (start <= end) {
-        for (; start <= end; start += step) {
-            result.push(start);
-        }
-    } else if (start >= end) {
-        for (; start >= end; start += step) {
-            result.push(start);
-        }
+  step = step || 1;
+  var result = [];
+  if (start <= end) {
+    for (; start <= end; start += step) {
+      result.push(start);
     }
-    return result;
+  } else if (start >= end) {
+    for (; start >= end; start += step) {
+      result.push(start);
+    }
+  }
+  return result;
 }
 
 function sum(ary) {
-    var total = 0;
-    for (var i = 0; i < ary.length; i++) {
-        total += ary[i];
+  var total = 0;
+  for (var i = 0; i < ary.length; i++) {
+    total += ary[i];
   }
   return total;
 }
