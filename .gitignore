@@ -1,2 +1,4 @@
-*.dYSM
+*.dSYM
+*.o
+.metadata
 valgrind-3.11.0
