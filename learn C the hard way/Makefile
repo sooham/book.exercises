@@ -1,16 +1,16 @@
 CC=cc
-CFLAGS=-Werror -Wall -std=c11 -g -o
+CFLAGS=-Werror -Wall -std=c11 -g
 
 # TODO: Segregate files into includes, lib and src folders
 
-all: *.c
-	# compile all c files in the folder separately
+all:
+	echo "usage: make [c source file]"
 
 %.c: %.h
 	$(CC) $(CFLAGS) $@
 
 clean:
-	rm -f *.dSYM *.o 
+	rm -rf *.dSYM *.o a.out
 
 
 
