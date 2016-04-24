@@ -1,19 +1,13 @@
-'use strict';
-// Logic behind the program
-// use a loop inside a loop
+"use strict";
 
-var board = '';
 var size = 8;
 
-for (var row = 0; row < size; row++) {
-  for (var col = row % 2 === 0 ? 0 : 1; col < size; col++) {
-    if (col % 2 === 0) {
-      board += ' ';
-    } else {
-      board += '#';
-    }
-  }
-  board += '\n';
-}
+var palette = [" ", "#"];
 
-console.log(board);
+for (var row = 0; row < size; row++) {
+    var line = "";
+    for (var col = 0; col < size; col++) {
+        line += palette[(row + col) % 2];
+    }
+    console.log(line);
+}
