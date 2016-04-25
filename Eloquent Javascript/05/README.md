@@ -1,3 +1,4 @@
+# Higher Order Functions
 - Abstraction of array traversal: **Array.prototype.forEach(action)**
 - Functions that operate on other functions are __higher order functions__
 - **Function.prototype.apply(this, [argsArray])** allows us to call a function

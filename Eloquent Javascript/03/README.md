@@ -1,3 +1,5 @@
+# Breif overview of Functions
+
 - In javascript, functions can be treated as variables themseleves,
   they can be passed to other functions as callbacks, be a return value
   of another function etc.
