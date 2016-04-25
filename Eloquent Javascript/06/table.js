@@ -1,14 +1,10 @@
-/* The first part of the program computes array
- * of minimum column width and row heights for a grid of cells
- * The rows variable will hold an array of arrays, with each inner array
- * representing a row of cells
- */
+"use strict";
 
 function rowHeights(rows) {
     return rows.map(function(row) {
         return row.reduce(function(max, cell) {
             return Math.max(max, cell.minHeight());
-        }, 0);
+            }, 0);
     });
 }
 
@@ -19,8 +15,6 @@ function colWidths(rows) {
         }, 0);
     });
 }
-
-// The code to draw the table
 
 function drawTable(rows) {
     var heights = rowHeights(rows);
@@ -44,16 +38,14 @@ function drawTable(rows) {
     return rows.map(drawRow).join("\n");
 }
 
-// create a constructor for cells that contains text and interface for table cells
-
 function repeat(string, times) {
     var result = "";
-    for (var i =0; i < times; i++)
+    for (var i = 0; i < times; i++)
         result += string;
     return result;
 }
 
-function TextCell(text) {           // The cell prototype
+function TextCell(text) {
     this.text = text.split("\n");
 }
 
@@ -61,11 +53,11 @@ TextCell.prototype.minWidth = function() {
     return this.text.reduce(function(width, line) {
         return Math.max(width, line.length);
     }, 0);
-};
+}
 
 TextCell.prototype.minHeight = function() {
     return this.text.length;
-};
+}
 
 TextCell.prototype.draw = function(width, height) {
     var result = [];
@@ -74,20 +66,33 @@ TextCell.prototype.draw = function(width, height) {
         result.push(line + repeat(" ", width - line.length));
     }
     return result;
+}
+
+function UnderlinedCell(inner) {
+    this.inner = inner;
+}
+UnderlinedCell.prototype.minWidth = function() {
+    return this.inner.minWidth();
+}
+UnderlinedCell.prototype.minHeight = function() {
+    return this.inner.minHeight + 1;
+}
+UndeflineCell.prototype.draw = function(width, height) {
+    return this.inner.draw(width, height - 1).concat(
+        [repeat("-", width)]);
 };
 
-// make a checkerboard
-
-var rows = [];
-for (var i = 0; i < 5; i++) {
-    var row = [];
-    for (var j = 0; j < 5; j++) {
-        if ((j + i) % 2 === 0)
-            row.push(new TextCell("##"));
-        else
-            row.push("  ");
-    }
-    rows.push(row);
+function RTextCell(text) {
+    TextCell.call(this, text);
 }
-console.log(drawTable(rows));
+RTextCell.prototype = Object.create(TextCell.prototype);
+RTextCell.prototype.draw = function(width, height) {
+    var result = [];
+    for (var i = 0; i < height; i++) {
+        var line = this.text[i] || "";
+        result.push(repeat(" ", width - line.length) + line);
+    }
+    return result;
+}
+
 

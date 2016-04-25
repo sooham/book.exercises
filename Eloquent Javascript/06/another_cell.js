@@ -1,25 +1,34 @@
-/* Implement a cell type named StretchCell(inner, width, height)
- * that conforms to the table cell interface, it should wrap
- * another cell and ensure that the resulting cell has at least the given
- * height and width.
-  */
+"use strict";
+
+function repeat(string, times) {
+    var result = "";
+    for (var i = 0; i < times; i++) {result += string;}
+    return result;
+}
 
 function StretchCell(inner, width, height) {
     this.inner = inner;
-    this.width = width;
-    this.height = height;
+    this.width = Math.max(inner.minWidth(), width);
+    this.height = Math.max(inner.minHeight(), height);
 }
 
 StretchCell.prototype.minWidth = function() {
-    return Math.max(this.inner.minWidth(), this.width);
-};
+    return this.width;
+}
 
 StretchCell.prototype.minHeight = function() {
-    return Math.max(this.inner.minHeight(), this.height);
-};
+    return this.height;
+}
 
-StretchCell.prototype.draw = function(width, height){
-    return this.innter.draw(width, height);
-};
+StretchCell.prototype.draw = function() {
+    // right and bottom pad
+    var result = [];
+    for (var row = 0; row < this.height; row++) {
+        if (this.inner.text[row] === undefined)
+            result.push(repeat(" ", this.width));
+        else
+            result.push(this.inner.text[row] + repeat(" ", this.width - this.inner.text[row].length));
+    }
 
-
+    return result;
+}
