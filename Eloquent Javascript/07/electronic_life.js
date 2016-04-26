@@ -420,7 +420,7 @@ SmartPlantEater.prototype.findClosestPlant = function(view) {
             var closest = "n";
             for (var dir in directions) {
                 var target = start.plus(directions[dir]);
-                if (view.world.grid.isInside(target) && (charFromElement(view.world.grid.get(target)) === " " || charFromElement(view.world.grid.get(target))))  {
+                if (view.world.grid.isInside(target) && (charFromElement(view.world.grid.get(target)) === " " || charFromElement(view.world.grid.get(target)) === "*"))  {
                    if (taxicab_distance(cur, target) < taxicab_distance(cur, start.plus(directions[closest]))) {
                         closest = dir;
                     }
