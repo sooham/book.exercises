@@ -1,21 +1,29 @@
 "use strict";
 
-function MultiplicatorUnitfailure() {}
+function MultiplicatorUnitFailure() {};
 
 function primitiveMultiply(a, b) {
     if (Math.random() < 0.5)
         return a * b;
     else
-        throw new MultiplicatorUnitfailure();
+        throw new MultiplactorUnitFailure();
 }
 
 function reliableMultiply(a, b) {
-    while (true) {
+    var result = null;
+    while (!result) {
         try {
-            return primitiveMultiply(a, b);
-        } catch (error) {
-            if (!(error instanceof MultiplicatorUnitfailure))
-                throw error;
+            result = primitiveMultiply(a, b);
+        } catch (e) {
+            if (e instanceof MultiplicatorUnitFailure) {
+            // do nothing
+            } else {
+                throw e;
+            }
         }
     }
+
+    return result;
 }
+
+console.log(reliableMultiply(8, 8));
