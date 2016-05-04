@@ -1,0 +1,45 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="description" content="a shitty skill sharing website I built to use node.js" />
+    <title>Skill sharing website</title>
+    <link type="text/javascript" href="./index.js" />
+    <link rel="stylesheet" type="text/css" href="./index.css" />
+</head>
+<body>
+    <form action="">
+        Your Name: <input type="text" name="user-name" >
+    </form>
+
+    <div class="talk-list">
+        <form class="talk" method="post" action="/talks/comments">
+            <h3 class="talk-name">Unituning</h3>
+            <p>by <span class="user-name">Carlos</span></p>
+
+            <div class="comments">
+                <p><span class="user-name">Alice</span>: Will you talk about raising a cycle?</p>
+                <p><span class="user-name">Carlos</span>: Defintely!</p>
+                <p><span class="user-name">Alice</span>: I'll be there!</p>
+        </div>
+            <input type="text" name="comment">
+            <input type="submit" value="Add Comment" onsubmit="add_comment()">
+            <input type="submit" value="Delete Talk" onsubmit="delete_talk()">
+        </form>
+    </div>
+    <form class="submit-talk" method="post" action="/talks">
+        <h3 class="talk-name">Submit a talk</h3>
+            <table>
+                <tr>
+                    <td>Title:</td>
+                    <td><input type="text" name="talk-title"></td>
+                </tr>
+                <tr>
+                    <td>Summary:</td>
+                    <td><input type="text" name="talk-summary"></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" onsubmit="submit_talk()"></td>
+                </tr>
+            </table>
+    </form>
+</body>

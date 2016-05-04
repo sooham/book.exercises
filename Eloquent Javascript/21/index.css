@@ -1,0 +1,53 @@
+body {
+    margin:1em 1em 1em 1em;
+}
+
+body form {
+    margin-bottom: 1em;
+}
+
+.talk {
+    border: 2px solid black;
+    padding: 0.1em 1em 1em 1em;
+}
+
+.talk-name,  .talk p {
+    margin: 0.1em 0em 0em 0em;
+}
+
+.comments {
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+
+.user-name {
+    font-weight:bold;
+}
+
+.talk input[type="text"] {
+    width: 60%;
+}
+
+.talk input {
+    margin: 0 2em 0 0;
+}
+
+.submit-talk * {
+    margin-bottom: 1em;
+}
+
+.submit-talk td * {
+    margin: 0 0 0 0;
+}
+
+.submit-talk tr td:first-child {
+    width: 5em;
+    text-align: right;
+}
+
+.submit-talk tr td input[type="text"] {
+    width: 50em;
+}
+
+
+
